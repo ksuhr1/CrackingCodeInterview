@@ -80,7 +80,7 @@ public:
             curr = next;
         }
         head = prev;
-    }cc
+    }
     
 };
 
