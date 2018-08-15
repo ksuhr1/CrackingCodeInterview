@@ -2,35 +2,90 @@
 
 using namespace std;
 
-#define SIZE 10
+#define SIZE 12
 
 class Stack{
 
     private:
         int top;
         int *arr;
+        int *arr2;
         int capacity;
-        int min;
     public:
+
         //constructor 
         Stack(int size = SIZE);
-
         bool push(int x);
         int pop();
         bool isEmpty();
         bool isFull();
         int peek();
-        int findMin();
         void display(Stack s);
 };
+
+//this class supports all stack operations from Stack class
+//used to store all the minimum elements
+class Stack2: public Stack
+{
+    Stack min;
+
+    public:
+        void push(int x);
+        int pop();
+        int getMin();
+};
+
+void Stack2::push(int x)
+{
+    if(isEmpty())
+    {
+        Stack::push(x);
+        min.push(x);
+    }
+    else
+    {
+        Stack::push(x);
+        int y = min.pop();
+        min.push(y);
+        if(x<=y)
+            min.push(x);
+    }
+   
+}
+
+//remove top element from both stacks
+int Stack2::pop()
+{
+
+    int x = Stack::pop();
+    int y = min.pop();
+    
+    //push the popped element y back only if it is not equal to x
+    //do this because if you had a bigger element in o.g list and you 
+    //pop it off, you don't want to pop of smallest value in min list,
+    //so you put it back
+    if(x!=y)
+        min.push(y);
+    return x;
+}
+
+int Stack2::getMin()
+{
+    int x = min.pop();
+    min.push(x);
+    return x;
+
+
+}
+
 
 Stack::Stack(int size)
 {
     capacity = size;
     top = -1;
     arr = new int[size];
-    min = 0;
 }
+
 
 bool Stack::push(int x)
 {
@@ -42,24 +97,8 @@ bool Stack::push(int x)
     else
     {
         arr[++top] = x;
-        if(min == 0)
-        {
-            min = x;
-        }
-        if (x < min)
-        {
-            min = x;
-        }
-        cout << "current min: " << min << endl;
         return true;
     }
-}
-
-int Stack::findMin()
-{
-    cout << "min: " << min << endl;
-    return min;
-
 }
 
 int Stack::pop()
@@ -72,7 +111,6 @@ int Stack::pop()
     else
     {
         int x = arr[top--];
-
         return x;
     }   
 }
@@ -109,24 +147,22 @@ void Stack::display(Stack s)
      cout << endl;
 }
 
-
-
-
 int main(int argc, const char * argv[])
 {
 
-    Stack s(5);
+    Stack2 s;
 
     s.push(5);
     s.push(6);
     s.push(3);
     s.push(7);
-    s.pop();
-   // s.pop();
-
     s.display(s);
-    s.findMin();
+    cout <<"Min: " << s.getMin() << endl;
+    s.push(2);
+    s.display(s);
+    cout << "Min: " << s.getMin() << endl;
     s.pop();
-    s.findMin();
+    s.display(s);
+    cout << "Min after a pop: " << s.getMin() << endl;
     return 0;
 }
