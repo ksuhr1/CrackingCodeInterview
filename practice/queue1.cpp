@@ -20,11 +20,9 @@ class Queue{
     //define functions
     bool isEmpty();
     int peek();
- //   void add(int data);
     void enqueue(int data);
     void dequeue();
     void displayQueue();
- //   int remove();
 };
 
 bool Queue::isEmpty()
@@ -53,6 +51,7 @@ int Queue::peek()
     }
 }
 
+//can only insert at the rear
 void Queue::enqueue(int data)
 {
     if(tail == MAX-1)
@@ -71,6 +70,7 @@ void Queue::enqueue(int data)
     
 }
 
+//remove from the beginnning aka head
 void Queue::dequeue()
 {
     if(isEmpty())
