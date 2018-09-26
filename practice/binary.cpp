@@ -43,7 +43,7 @@ void formBinary(int k, string s)
 int main(int argc, const char * argv[])
 {
 
-    printBinary(2);
+    printBinary(3);
 
     return 0;
 }
